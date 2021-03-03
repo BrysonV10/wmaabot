@@ -94,15 +94,19 @@ async def help(ctx):
     embed.add_field(name="w!all_members", value="Print each member in a separate message", inline=True)
     embed.add_field(name="w!role_setup", value="The bot will add a reaction to each message with an * at the end.", inline=True)
     embed.add_field(name="w!emergency_shutdown", value="Kill all bot processes", inline=True)
-    embed.set_footer(text="Moderator Help command - version 1.1")
+    embed.set_footer(text="Moderator Help command - version 1.1b")
     await ctx.send(embed=embed)
   else:
     embed=discord.Embed(title="WMAA Bot Help", color=0xcc0000)
     embed.set_thumbnail(url="https://cdn.discordapp.com/attachments/760194690967535636/805934654045552650/Wmaa_logo.png")
     embed.add_field(name="w!set_nick", value="Set your nickname. ", inline=True)
     embed.add_field(name="w!help", value="This help command", inline=True)
-    embed.set_footer(text="Basic everybody help command - Version 1.1")
+    embed.set_footer(text="Basic everybody help command - Version 1.1b")
     await ctx.send(embed=embed)
+
+@bot.command(name="github")
+async def github(ctx):
+  await ctx.send("GitHub for the WMAAbot: https://github.com/BrysonV10/wmaabot. See the code of the WMAA bot!")
 
 @bot.command(name="apply_roles")
 @commands.has_any_role("Roler", "Staff", "Owners", "Fish")
