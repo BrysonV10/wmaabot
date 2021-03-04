@@ -7,6 +7,7 @@ intents.reactions = True
 bot = commands.Bot(command_prefix="w!", intents=intents)
 client = discord.Client(intent=intents)
 bot.remove_command("help")
+bot.load_extension("list_members")
 @bot.event
 async def on_ready():
   print("Connected to Discord as:")
@@ -155,18 +156,18 @@ async def dm(ctx):
   await ctx.message.author.send("hello")
 
 #All Members in seperate message command
-@bot.command(name="all_members")
-@commands.guild_only()
-@commands.has_any_role('student')
-async def all_members(ctx, exclude:bool=False):
-  x = ctx.guild.members
-  await ctx.send("Starting... please wait until you see the 'Done' message!")
-  for mem in x:
-    if mem.bot and exclude == False:
-      await ctx.send("*" + mem.display_name + "* BOT")
-    elif not mem.bot:
-      await ctx.send(mem.display_name)
-  await ctx.send("**Done.**")
+# @bot.command(name="all_members")
+# @commands.guild_only()
+# @commands.has_any_role('student')
+# async def all_members(ctx, exclude:bool=False):
+#   x = ctx.guild.members
+#   await ctx.send("Starting... please wait until you see the 'Done' message!")
+#   for mem in x:
+#     if mem.bot and exclude == False:
+#       await ctx.send("*" + mem.display_name + "* BOT")
+#     elif not mem.bot:
+#       await ctx.send(mem.display_name)
+#   await ctx.send("**Done.**")
 
 #On demand testing of the initual DM strand
 #WORKING
