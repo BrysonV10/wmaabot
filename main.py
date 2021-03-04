@@ -20,28 +20,35 @@ async def on_member_join(member):
   modChan = discord.utils.get(server.text_channels, name="moderator-only")
   memobj = discord.utils.get(server.members, id=member.id)
   restrictedAcc = discord.utils.get(server.roles, name="Outside-Aviation")
-  await member.send("Hello, and welcome to the Official West Michigan Aviation Academy Discord Server! I'm the main bot in the WMAA server. I manage all roles and many systems within the server. I need a little bit of information from you to get started. Do you go to WMAA or are you WMAA staff? [Respond with 'yes' or 'no']")
+  await member.send("Hello, and welcome to the Official West Michigan Aviation Academy Discord Server! I'm the main bot in the WMAA server. I manage all roles and many systems within the server. I need a little bit of information from you to get started. Are you a WMAA student, WMAA staff, or neither [Respond with 'student', 'staff', or 'neither']")
   def checkMsg(m):
     return m.author == member and isinstance(m.channel, discord.channel.DMChannel)
+  
   try:
     msg = await bot.wait_for('message', check=checkMsg, timeout=300)
   except Exception:
     await member.send("Due to bot limitations, I can only handle DM requests for a max of 5 minutes, and you timed it out. I've given you restricted access and DMed the moderators to handle your case.")
     await modChan.send(member.display_name + " timed out a DM strand. I've given them restricted access in the meantime.")
     await memobj.add_roles(restrictedAcc)
-  if msg.content == "yes" or msg.content == "Yes":
+  
+  if msg.content == "student" or msg.content == "Student":
     await member.send("Ok cool!")
     await member.send("What is a good nickname that the members in the server can use to talk to you?")
     nickname = await bot.wait_for("message", check=checkMsg)
     await memobj.edit(nick=nickname.content)
-    await member.send("Your nickname has been set. Go to the #roles channel (https://discord.com/channels/695039585180319845/708150431729189005/746498758627295323) in the server to set up your roles! If I incorrectly set up your nickname, just use the `w!set_nick` command to set your nickname.")
-  elif msg.content == "no" or msg.content == "No":
-    await member.send("Ah ok. Currently this server is restricted to WMAA students and staff only. I can send a DM to the server owner who can let you in if you get access.")
+    await memobj.add_roles(discord.utils.get(server.roles, name="student"))
+    await member.send("Your nickname has been set. Go to the #roles(https://discord.com/channels/695039585180319845/708150431729189005/746498758627295323) channel in the server to set up your roles!")
+
+  elif msg.content == "staff" or msg.content == "Staff":
+    await member.send("Hello staff member! I've set up your roles for you. Welcome to the WMAA discord server!")
     await memobj.add_roles(restrictedAcc)
-    await modChan.send(member.display_name + " is requesting to join the server. I've given them restrictive priviliages in the meantime.")
-  else:
-    await member.send("I don't know what you mean. I'm going to assume you don't go to WMAA.")
+    await modChan.send(member.display_name + " is a staff member. They have the restricted access role given to them currently.")
+  elif msg.content == "neither" or msg.content == "Neither":
+    await member.send("Ok, currently this server is restricted to WMAA students and staff, but I've sent a message to the Admins. If they allow you, they'll give you roles and access to the main channels in the server. ")
     await memobj.add_roles(restrictedAcc)
+    await modChan.send(member.display_name + " is trying to join the server. They are not a WMAA student or staff. They have restricted access currently.")
+
+
 @bot.event
 async def on_raw_reaction_add(reaction):
   serv = discord.utils.get(bot.guilds, id=servId)
