@@ -5,6 +5,7 @@ intents.members = True
 intents.reactions = True
 bot = commands.Bot(command_prefix="w!", intents=intents)
 client = discord.Client()
+bot.remove_command("help")
 class List_Members(commands.Cog):
   def __init__(self, bot):
     self.bot = bot
